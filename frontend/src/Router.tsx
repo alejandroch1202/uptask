@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { AppLayout } from './layouts/AppLayout'
-import { Dashboard } from './pages/Dashboard'
+import { AppLayout } from '@/layouts/AppLayout'
+import { Dashboard } from '@/pages/Dashboard'
+import { CreateProject } from './pages/Dashboard/projects/CreateProject'
 
 const Router = () => {
   return (
@@ -11,6 +12,11 @@ const Router = () => {
             index
             path='/'
             element={<Dashboard />}
+          />
+
+          <Route
+            path='/proyectos/crear'
+            element={<CreateProject />}
           />
         </Route>
       </Routes>
