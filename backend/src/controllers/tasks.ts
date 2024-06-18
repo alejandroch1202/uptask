@@ -7,10 +7,12 @@ export const create = async (req: Request, res: Response) => {
     task.project = req.project
     req.project.tasks.push(task)
     await Promise.allSettled([task.save(), req.project.save()])
-    res.status(201).json({ ok: true, message: 'Task created' })
+    res.status(201).json({ ok: true, message: 'Tarea creada correctamente' })
   } catch (error) {
     console.log(error)
-    res.status(500).json({ ok: false, message: 'Server error' })
+    res
+      .status(500)
+      .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
   }
 }
 
@@ -22,7 +24,9 @@ export const list = async (req: Request, res: Response) => {
     res.status(200).json({ ok: true, tasks })
   } catch (error) {
     console.log(error)
-    res.status(500).json({ ok: false, message: 'Server error' })
+    res
+      .status(500)
+      .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
   }
 }
 
@@ -31,7 +35,9 @@ export const find = async (req: Request, res: Response) => {
     res.status(200).json({ ok: true, task: req.task })
   } catch (error) {
     console.log(error)
-    res.status(500).json({ ok: false, message: 'Server error' })
+    res
+      .status(500)
+      .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
   }
 }
 
@@ -42,10 +48,14 @@ export const update = async (req: Request, res: Response) => {
     req.task.description = changes.description
     await req.task.save()
 
-    res.status(200).json({ ok: true, message: 'Task updated' })
+    res
+      .status(200)
+      .json({ ok: true, message: 'Tarea actualizada correctamente' })
   } catch (error) {
     console.log(error)
-    res.status(500).json({ ok: false, message: 'Server error' })
+    res
+      .status(500)
+      .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
   }
 }
 
@@ -57,10 +67,12 @@ export const remove = async (req: Request, res: Response) => {
 
     await Promise.allSettled([req.task.deleteOne(), req.project.save()])
 
-    res.status(200).json({ ok: true, message: 'Task deleted' })
+    res.status(200).json({ ok: true, message: 'Tarea eliminada correctamente' })
   } catch (error) {
     console.log(error)
-    res.status(500).json({ ok: false, message: 'Server error' })
+    res
+      .status(500)
+      .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
   }
 }
 
@@ -69,9 +81,13 @@ export const updateStatus = async (req: Request, res: Response) => {
     req.task.status = req.body.status
     await req.task.save()
 
-    res.status(200).json({ ok: true, message: 'Task status updated' })
+    res
+      .status(200)
+      .json({ ok: true, message: 'Tarea actualizada correctamente' })
   } catch (error) {
     console.log(error)
-    res.status(500).json({ ok: false, message: 'Server error' })
+    res
+      .status(500)
+      .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
   }
 }

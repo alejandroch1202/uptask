@@ -1,3 +1,4 @@
+import { PlusIcon } from '@heroicons/react/20/solid'
 import { Link } from 'react-router-dom'
 
 export const Dashboard = () => {
@@ -15,8 +16,9 @@ export const Dashboard = () => {
         <nav className='my-5'>
           <Link
             to={'/proyectos/crear'}
-            className='bg-purple-400 hover:bg-purple-500 px-10 py-3 text-white text-xl font-bold cursor-pointer transition-colors'
+            className='bg-purple-400 hover:bg-purple-500 px-10 py-3 text-white text-xl font-bold cursor-pointer transition-colors flex items-center justify-center gap-4'
           >
+            <PlusIcon className='h-6 w-6' />
             Nuevo proyecto
           </Link>
         </nav>

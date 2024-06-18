@@ -6,10 +6,12 @@ export const create = async (req: Request, res: Response) => {
   try {
     const project = new Project(req.body)
     await project.save()
-    res.status(201).json({ ok: true, message: 'Project created' })
+    res.status(201).json({ ok: true, message: 'Proyecto creado correctamente' })
   } catch (error) {
     console.log(error)
-    res.status(500).json({ ok: false, message: 'Server error' })
+    res
+      .status(500)
+      .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
   }
 }
 
@@ -19,7 +21,9 @@ export const list = async (req: Request, res: Response) => {
     res.status(200).json({ ok: true, projects })
   } catch (error) {
     console.log(error)
-    res.status(500).json({ ok: false, message: 'Server error' })
+    res
+      .status(500)
+      .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
   }
 }
 
@@ -29,7 +33,9 @@ export const find = async (req: Request, res: Response) => {
     res.status(200).json({ ok: true, project: projectPopulated })
   } catch (error) {
     console.log(error)
-    res.status(500).json({ ok: false, message: 'Server error' })
+    res
+      .status(500)
+      .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
   }
 }
 
@@ -41,10 +47,14 @@ export const update = async (req: Request, res: Response) => {
     req.project.description = changes.description
     req.project.save()
 
-    res.status(200).json({ ok: true, message: 'Project updated' })
+    res
+      .status(200)
+      .json({ ok: true, message: 'Proyecto actualizado correctamente' })
   } catch (error) {
     console.log(error)
-    res.status(500).json({ ok: false, message: 'Server error' })
+    res
+      .status(500)
+      .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
   }
 }
 
@@ -55,9 +65,13 @@ export const remove = async (req: Request, res: Response) => {
       req.project.deleteOne()
     ])
 
-    res.status(200).json({ ok: true, message: 'Project deleted' })
+    res
+      .status(200)
+      .json({ ok: true, message: 'Proyecto eliminado correctamente' })
   } catch (error) {
     console.log(error)
-    res.status(500).json({ ok: false, message: 'Server error' })
+    res
+      .status(500)
+      .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
   }
 }
