@@ -10,3 +10,12 @@ export const projectSchema = z.object({
 export type Project = z.infer<typeof projectSchema>
 
 export type DraftProject = Pick<Project, 'name' | 'client' | 'description'>
+
+export const dashboardProjectSchema = z.array(
+  projectSchema.pick({
+    _id: true,
+    name: true,
+    client: true,
+    description: true
+  })
+)

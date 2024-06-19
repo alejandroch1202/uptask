@@ -1,5 +1,6 @@
 import express from 'express'
 import cors from 'cors'
+import morgan from 'morgan'
 import 'dotenv/config'
 import { router } from './routes'
 import { connect } from './config/db'
@@ -13,6 +14,7 @@ connect()
 const app = express()
 
 app.use(cors(corsOptions))
+app.use(morgan('dev'))
 app.use(express.json())
 router(app)
 

@@ -1,29 +1,38 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 import { ProjectForm } from '@/components/projects/ProjectForm'
-import { createProject } from '@/services/project'
-import type { DraftProject } from '@/types/index'
+import { editProject } from '@/services/project'
+import type { DraftProject, Project } from '@/types/index'
 import { ArrowLeftIcon } from '@heroicons/react/20/solid'
 
-export const CreateProject = () => {
-  const navigate = useNavigate()
-  const initialValues: DraftProject = {
-    name: '',
-    client: '',
-    description: ''
-  }
+interface EditProjectFormProps {
+  data: DraftProject
+  projectId: Project['_id']
+}
 
+export const EditProjectForm = ({ data, projectId }: EditProjectFormProps) => {
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
     formState: { errors }
-  } = useForm({ defaultValues: initialValues })
+  } = useForm({
+    defaultValues: {
+      name: data.name,
+      client: data.client,
+      description: data.description
+    }
+  })
+
+  const queryClient = useQueryClient()
 
   const { mutate } = useMutation({
-    mutationFn: createProject,
+    mutationFn: editProject,
     onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['projects'] })
+      queryClient.invalidateQueries({ queryKey: ['editProject', projectId] })
       toast.success(data.message)
       navigate('/')
     },
@@ -32,18 +41,18 @@ export const CreateProject = () => {
     }
   })
 
-  const handleForm = (data: DraftProject) => {
-    mutate(data)
+  const handleForm = (formData: DraftProject) => {
+    mutate({ formData, projectId })
   }
 
   return (
     <>
       <div className='flex justify-between items-center flex-col lg:flex-row gap-2'>
         <div>
-          <h1 className='text-5xl font-black'>Crear Proyecto</h1>
+          <h1 className='text-5xl font-black'>Editar Proyecto</h1>
 
           <p className='text-2xl font-light text-gray-500 mt-5'>
-            Llena el siguiente formulario para crear un proyecto
+            Edita el siguiente formulario para actualizar un proyecto
           </p>
         </div>
 
@@ -71,7 +80,7 @@ export const CreateProject = () => {
 
         <input
           type='submit'
-          value={'Crear proyecto'}
+          value={'Guardar cambios'}
           className='bg-fuchsia-600 hover:bg-fuchsia-700 w-full p-3 text-white text-center uppercase font-bold cursor-pointer transition-colors'
         />
       </form>
