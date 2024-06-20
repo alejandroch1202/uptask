@@ -11,6 +11,7 @@ interface TaskApiProps {
   formData: DraftTask
   projectId: Project['_id']
   taskId: Task['_id']
+  status: Task['status']
 }
 
 export const createTask = async ({
@@ -68,6 +69,25 @@ export const removeTask = async ({
 }: Pick<TaskApiProps, 'projectId' | 'taskId'>) => {
   try {
     const { data } = await api.delete(`/projects/${projectId}/tasks/${taskId}`)
+    return data
+  } catch (error) {
+    if (isAxiosError(error) && error.response !== undefined) {
+      throw new Error(error.response.data.message)
+    }
+  }
+}
+
+export const updateTaskStatus = async ({
+  projectId,
+  taskId,
+  status
+}: Pick<TaskApiProps, 'projectId' | 'taskId' | 'status'>) => {
+  try {
+    console.log(projectId, taskId, status)
+    const { data } = await api.post(
+      `/projects/${projectId}/tasks/${taskId}/status`,
+      { status }
+    )
     return data
   } catch (error) {
     if (isAxiosError(error) && error.response !== undefined) {

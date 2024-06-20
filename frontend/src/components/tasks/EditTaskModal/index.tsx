@@ -6,7 +6,7 @@ import {
   Transition,
   TransitionChild
 } from '@headlessui/react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import type { DraftTask, Task } from '@/types/index'
 import { TaskForm } from '../TaskForm'
@@ -16,6 +16,10 @@ import { toast } from 'react-toastify'
 
 export const EditTaskModal = ({ data }: { data: Task }) => {
   const navigate = useNavigate()
+  const { search } = useLocation()
+  const queryParams = new URLSearchParams(search)
+  const taskId = queryParams.get('editTask')!
+
   const {
     register,
     reset,
@@ -32,7 +36,8 @@ export const EditTaskModal = ({ data }: { data: Task }) => {
   const { mutate } = useMutation({
     mutationFn: editTask,
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['editProject', projectId] })
+      queryClient.invalidateQueries({ queryKey: ['project', projectId] })
+      queryClient.invalidateQueries({ queryKey: ['task', taskId] })
       toast.success(data.message)
       reset()
       navigate('', { replace: true })
@@ -43,7 +48,7 @@ export const EditTaskModal = ({ data }: { data: Task }) => {
   })
 
   const handleEditTask = (formData: DraftTask) => {
-    mutate({ formData, projectId, taskId: data._id })
+    mutate({ formData, projectId, taskId: taskId })
   }
 
   return (

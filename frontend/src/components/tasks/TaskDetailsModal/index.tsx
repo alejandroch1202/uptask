@@ -7,10 +7,12 @@ import {
   TransitionChild
 } from '@headlessui/react'
 import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
-import { findTask } from '@/services/tasks'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { findTask, updateTaskStatus } from '@/services/tasks'
 import { formatDate } from '@/utils/index'
-// import { toast } from 'react-toastify'
+import { statusTranslations } from '../TasksList'
+import { toast } from 'react-toastify'
+import type { TaskStatus } from '@/types/index'
 
 export const TaskDetailsModal = () => {
   const navigate = useNavigate()
@@ -27,6 +29,26 @@ export const TaskDetailsModal = () => {
     retry: false,
     enabled: show
   })
+
+  const queryClient = useQueryClient()
+
+  const { mutate } = useMutation({
+    mutationFn: updateTaskStatus,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['project', projectId] })
+      queryClient.invalidateQueries({ queryKey: ['task', taskId] })
+      toast.success(data.message)
+      navigate('', { replace: true })
+    },
+    onError: (error) => {
+      toast.error(error.message)
+    }
+  })
+
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const status = e.target.value as TaskStatus
+    mutate({ projectId, taskId, status })
+  }
 
   if (isError) {
     // toast.error(error.message, { toastId: 'error' })
@@ -88,7 +110,30 @@ export const TaskDetailsModal = () => {
                       {data.description}
                     </p>
                     <div className='my-5 space-y-3'>
-                      <label className='font-bold'>{data.status}</label>
+                      <label
+                        htmlFor='status'
+                        className='font-bold'
+                      >
+                        Estado actual
+                      </label>
+                      <select
+                        onChange={handleChange}
+                        className='w-full p-3 border border-gray-300 rounded-lg text-slate-600'
+                        name='status'
+                        id='status'
+                        defaultValue={data.status}
+                      >
+                        {Object.entries(statusTranslations).map(
+                          ([key, value]) => (
+                            <option
+                              key={key}
+                              value={key}
+                            >
+                              {value}
+                            </option>
+                          )
+                        )}
+                      </select>
                     </div>
                   </DialogPanel>
                 </TransitionChild>
