@@ -1,18 +1,16 @@
+import { isAxiosError } from 'axios'
+import { api } from '@/config/axios'
 import {
   dashboardProjectSchema,
   type Project,
-  type DraftProject,
-  projectSchema
+  type DraftProject
 } from '@/types/index'
-import { api } from '@/config/axios'
-import { isAxiosError } from 'axios'
 
 export const createProject = async (formData: DraftProject) => {
   try {
     const { data } = await api.post('/projects', formData)
     return data
   } catch (error) {
-    console.log(error)
     if (isAxiosError(error) && error.response !== undefined) {
       throw new Error(error.response.data.message)
     }
@@ -28,7 +26,6 @@ export const listProjects = async () => {
       return response.data
     }
   } catch (error) {
-    console.log(error)
     if (isAxiosError(error) && error.response !== undefined) {
       throw new Error(error.response.data.message)
     }
@@ -38,13 +35,8 @@ export const listProjects = async () => {
 export const findProject = async (id: Project['_id']) => {
   try {
     const { data } = await api.get(`/projects/${id}`)
-    const response = projectSchema.safeParse(data.project)
-
-    if (response.success) {
-      return response.data
-    }
+    return data.project
   } catch (error) {
-    console.log(error)
     if (isAxiosError(error) && error.response !== undefined) {
       throw new Error(error.response.data.message)
     }
@@ -67,7 +59,6 @@ export const editProject = async ({
       return data
     }
   } catch (error) {
-    console.log(error)
     if (isAxiosError(error) && error.response !== undefined) {
       throw new Error(error.response.data.message)
     }
@@ -82,7 +73,6 @@ export const removeProject = async (id: Project['_id']) => {
       return data
     }
   } catch (error) {
-    console.log(error)
     if (isAxiosError(error) && error.response !== undefined) {
       throw new Error(error.response.data.message)
     }

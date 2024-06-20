@@ -12,7 +12,8 @@
       "@/layouts/*": ["layouts/*"],
       "@/pages/*": ["pages/*"],
       "@/services/*": ["services/*"],
-      "@/types/*": ["types/*"]
+      "@/types/*": ["types/*"],
+      "@/utils/*": ["utils/*"]
     },
 
     /* Bundler mode */

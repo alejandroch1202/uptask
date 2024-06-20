@@ -13,18 +13,20 @@ export const validateTaskExists = async (
   next: NextFunction
 ) => {
   try {
-    const { id } = req.params
-    const task = await Task.findById(id)
+    const { taskId } = req.params
+    const task = await Task.findById(taskId)
 
     if (task === null) {
-      return res.status(404).json({ ok: false, message: 'Task not found' })
+      return res.status(404).json({ ok: false, message: 'Tarea no encontrada' })
     }
 
     req.task = task
     next()
   } catch (error) {
     console.log(error)
-    res.status(500).json({ ok: false, message: 'Server error' })
+    res
+      .status(500)
+      .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
   }
 }
 
@@ -35,11 +37,15 @@ export const validateTaskBelongs = async (
 ) => {
   try {
     if (req.task.project.toString() !== req.project.id.toString()) {
-      return res.status(400).json({ ok: false, message: 'Invalid action' })
+      return res
+        .status(400)
+        .json({ ok: false, message: 'No se pudo procesar tu solicitud' })
     }
     next()
   } catch (error) {
     console.log(error)
-    res.status(500).json({ ok: false, message: 'Server error' })
+    res
+      .status(500)
+      .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
   }
 }

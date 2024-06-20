@@ -17,13 +17,17 @@ export const validateProjectExists = async (
     const project = await Project.findById(projectId)
 
     if (project === null) {
-      return res.status(404).json({ ok: false, message: 'Project not found' })
+      return res
+        .status(404)
+        .json({ ok: false, message: 'Proyecto no encontrado' })
     }
 
     req.project = project
     next()
   } catch (error) {
     console.log(error)
-    res.status(500).json({ ok: false, message: 'Server error' })
+    res
+      .status(500)
+      .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
   }
 }

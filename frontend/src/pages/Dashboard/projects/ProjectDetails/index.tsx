@@ -1,13 +1,16 @@
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { findProject } from '@/services/project'
-import { CreateTaskForm } from '@/components/tasks/CreateTaskModal'
+import { CreateTaskModal } from '@/components/tasks/CreateTaskModal'
+import { TaskList } from '@/components/tasks/TasksList'
+import { EditTaskData } from '@/components/tasks/EditTaskData'
+import { TaskDetailsModal } from '@/components/tasks/TaskDetailsModal'
 
 export const ProjectDetails = () => {
   const navigate = useNavigate()
   const { projectId } = useParams()
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['editProject', projectId],
+    queryKey: ['project', projectId],
     queryFn: async () => await findProject(projectId!),
     retry: false
   })
@@ -34,7 +37,11 @@ export const ProjectDetails = () => {
           </button>
         </nav>
 
-        <CreateTaskForm />
+        <TaskList tasks={data.tasks} />
+
+        <CreateTaskModal />
+        <EditTaskData />
+        <TaskDetailsModal />
       </>
     )
   }

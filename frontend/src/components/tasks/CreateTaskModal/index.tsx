@@ -6,17 +6,23 @@ import {
   Transition,
   TransitionChild
 } from '@headlessui/react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { toast } from 'react-toastify'
+import { useForm } from 'react-hook-form'
 import { TaskForm } from '../TaskForm'
 import type { DraftTask } from '@/types/index'
-import { useForm } from 'react-hook-form'
+import { createTask } from '@/services/tasks'
 
-export const CreateTaskForm = () => {
+export const CreateTaskModal = () => {
   const navigate = useNavigate()
   const { search } = useLocation()
   const queryParams = new URLSearchParams(search)
   const modalTask = queryParams.get('newTask')
   const show = modalTask === 'true'
+
+  const params = useParams()
+  const projectId = params.projectId!
 
   const initialValues: DraftTask = {
     name: '',
@@ -25,12 +31,28 @@ export const CreateTaskForm = () => {
 
   const {
     register,
+    reset,
     handleSubmit,
     formState: { errors }
   } = useForm({ defaultValues: initialValues })
 
+  const queryClient = useQueryClient()
+
+  const { mutate } = useMutation({
+    mutationFn: createTask,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['project', projectId] })
+      toast.success(data.message)
+      reset()
+      navigate('', { replace: true })
+    },
+    onError: (error) => {
+      toast.error(error.message)
+    }
+  })
+
   const handleCreateTask = (formData: DraftTask) => {
-    console.log(formData)
+    mutate({ formData, projectId })
   }
 
   return (
