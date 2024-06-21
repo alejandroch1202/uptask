@@ -294,6 +294,11 @@
   resolved "https://registry.yarnpkg.com/@pkgjs/parseargs/-/parseargs-0.11.0.tgz#a77ea742fab25775145434eb1d2328cf5013ac33"
   integrity sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==
 
+"@preline/pin-input@^2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@preline/pin-input/-/pin-input-2.3.0.tgz#e0d21c0a4ab2793685c3becd8c89d179157f31e7"
+  integrity sha512-rpXfG4YvpUUVbvPdvk5KqdLpOslsD24j1DmqH0T6QdPM1gsRJDpSUWHVJ/an/q6SLnKBESS9lRX9oQrbZdaiog==
+
 "@react-aria/focus@^3.16.2":
   version "3.17.1"
   resolved "https://registry.yarnpkg.com/@react-aria/focus/-/focus-3.17.1.tgz#c796a188120421e2fedf438cadacdf463c77ad29"

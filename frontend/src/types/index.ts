@@ -43,3 +43,19 @@ export const taskSchema = z.object({
 export type Task = z.infer<typeof taskSchema>
 
 export type DraftTask = Pick<Project, 'name' | 'description'>
+
+const authSchema = z.object({
+  name: z.string(),
+  email: z.string().email(),
+  password: z.string(),
+  confirmPassword: z.string()
+})
+
+export type Auth = z.infer<typeof authSchema>
+
+export type LoginForm = Pick<Auth, 'email' | 'password'>
+
+export type SignupForm = Pick<
+  Auth,
+  'name' | 'email' | 'password' | 'confirmPassword'
+>

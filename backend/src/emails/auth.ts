@@ -18,7 +18,7 @@ export const sendConfirmationEmail = async ({
     text: 'Confirma tu cuenta',
     html: `<p>Hola ${name}, comprueba tu cuenta en UpTask</p>
           <p>Tu cuenta has sido creada, ahora debes confirmarla con el siguiente enlace:
-          <a href="${process.env.FRONTEND_URL}/auth/confirmar">Confirmar cuenta</a></p>
+          <a href="${process.env.FRONTEND_URL}/auth/confirmar-cuenta">Confirmar cuenta</a></p>
           <p>Ingresa el siguiente código: <b>${token}</b></p>
           <p>Este código expira en 15 minutos</p>
           <p>Si tu no creaste esta cuenta, puedes ignorar este mensaje</p>

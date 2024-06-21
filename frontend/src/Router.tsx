@@ -1,9 +1,13 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AppLayout } from '@/layouts/AppLayout'
-import { Dashboard } from '@/pages/Dashboard'
-import { CreateProject } from './pages/Dashboard/projects/CreateProject'
-import { EditProject } from './pages/Dashboard/projects/EditProject'
-import { ProjectDetails } from './pages/Dashboard/projects/ProjectDetails'
+import { AuthLayout } from '@/layouts/AuthLayout'
+import { Dashboard } from '@/pages/dashboard'
+import { CreateProject } from '@/pages/projects/CreateProject'
+import { EditProject } from '@/pages/projects/EditProject'
+import { ProjectDetails } from '@/pages/projects/ProjectDetails'
+import { Login } from './pages/auth/Login'
+import { Signup } from './pages/auth/Signup'
+import { Confirm } from './pages/auth/Confirm'
 
 const Router = () => {
   return (
@@ -29,6 +33,26 @@ const Router = () => {
           <Route
             path='/proyectos/:projectId/editar'
             element={<EditProject />}
+          />
+        </Route>
+
+        <Route element={<AuthLayout />}>
+          <Route
+            index
+            path='/auth/iniciar-sesion'
+            element={<Login />}
+          />
+
+          <Route
+            index
+            path='/auth/registrarse'
+            element={<Signup />}
+          />
+
+          <Route
+            index
+            path='/auth/confirmar-cuenta'
+            element={<Confirm />}
           />
         </Route>
       </Routes>
