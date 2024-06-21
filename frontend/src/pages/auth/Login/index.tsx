@@ -1,9 +1,13 @@
 import { useForm } from 'react-hook-form'
 import type { LoginForm } from '@/types/index'
 import { ErrorMessage } from '@/components/ErrorMessage'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useMutation } from '@tanstack/react-query'
+import { login } from '@/services/auth'
+import { toast } from 'react-toastify'
 
 export const Login = () => {
+  const navigate = useNavigate()
   const initialValues: LoginForm = {
     email: '',
     password: ''
@@ -14,7 +18,20 @@ export const Login = () => {
     formState: { errors }
   } = useForm({ defaultValues: initialValues })
 
-  const handleLogin = (formData: LoginForm) => {}
+  const { mutate } = useMutation({
+    mutationFn: login,
+    onSuccess: (data) => {
+      navigate('/')
+      toast.success(data.message)
+    },
+    onError: (error) => {
+      toast.error(error.message)
+    }
+  })
+
+  const handleLogin = (formData: LoginForm) => {
+    mutate(formData)
+  }
 
   return (
     <>
@@ -26,7 +43,7 @@ export const Login = () => {
 
       <form
         onSubmit={handleSubmit(handleLogin)}
-        className='space-y-8 p-10 bg-white mt-10'
+        className='space-y-8 p-10 bg-white mt-10 rounded-lg'
         noValidate
       >
         <div className='flex flex-col gap-5'>
@@ -41,7 +58,7 @@ export const Login = () => {
             id='email'
             type='email'
             placeholder='Correo de registro'
-            className='w-full p-3  border-gray-300 border'
+            className='w-full p-3  border-gray-300 border rounded-md'
             {...register('email', {
               required: 'El correo es obligatorio',
               pattern: {
@@ -67,7 +84,7 @@ export const Login = () => {
             id='password'
             type='password'
             placeholder='Contraseña de registro'
-            className='w-full p-3  border-gray-300 border'
+            className='w-full p-3  border-gray-300 border rounded-md'
             {...register('password', {
               required: 'La contraseña es obligatoria'
             })}
@@ -80,7 +97,7 @@ export const Login = () => {
         <input
           type='submit'
           value='Iniciar sesión'
-          className='bg-fuchsia-600 hover:bg-fuchsia-700 w-full p-3  text-white font-black  text-xl cursor-pointer'
+          className='bg-fuchsia-600 hover:bg-fuchsia-700 w-full p-3  text-white font-black  text-xl cursor-pointer rounded-md'
         />
       </form>
 

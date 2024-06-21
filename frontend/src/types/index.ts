@@ -59,3 +59,5 @@ export type SignupForm = Pick<
   Auth,
   'name' | 'email' | 'password' | 'confirmPassword'
 >
+
+export type RequestConfirmTokenForm = Pick<Auth, 'email'>

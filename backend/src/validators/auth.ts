@@ -21,3 +21,7 @@ export const confirmAccountBody = [
 export const loginHeader = [
   header('authorization').exists().withMessage('Invalid credentials')
 ]
+
+export const requestConfirmTokenBody = [
+  body('email').isEmail().withMessage('Invalid email')
+]

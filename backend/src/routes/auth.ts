@@ -1,6 +1,16 @@
 import { Router } from 'express'
-import { signup, confirmAccount, login } from './../controllers/auth'
-import { signupBody, confirmAccountBody, loginHeader } from '../validators/auth'
+import {
+  signup,
+  confirmAccount,
+  login,
+  requestConfirmToken
+} from './../controllers/auth'
+import {
+  signupBody,
+  confirmAccountBody,
+  loginHeader,
+  requestConfirmTokenBody
+} from '../validators/auth'
 import { handleValidation } from '../middlewares/validation'
 
 const router = Router()
@@ -15,5 +25,12 @@ router.post(
 )
 
 router.post('/login', loginHeader, handleValidation, login)
+
+router.post(
+  '/request-token',
+  requestConfirmTokenBody,
+  handleValidation,
+  requestConfirmToken
+)
 
 export default router

@@ -49,7 +49,7 @@ export const Signup = () => {
 
       <form
         onSubmit={handleSubmit(handleRegister)}
-        className='space-y-8 p-10  bg-white mt-10'
+        className='space-y-8 p-10  bg-white mt-10 rounded-lg'
         noValidate
       >
         <div className='flex flex-col gap-5'>
@@ -57,7 +57,7 @@ export const Signup = () => {
           <input
             type='name'
             placeholder='Nombre de registro'
-            className='w-full p-3  border-gray-300 border'
+            className='w-full p-3  border-gray-300 border rounded-md'
             {...register('name', {
               required: 'El nombre de usuario es obligatorio'
             })}
@@ -78,7 +78,7 @@ export const Signup = () => {
             id='email'
             type='email'
             placeholder='Correo de registro'
-            className='w-full p-3  border-gray-300 border'
+            className='w-full p-3  border-gray-300 border rounded-md'
             {...register('email', {
               required: 'El correo de registro es obligatorio',
               pattern: {
@@ -98,7 +98,7 @@ export const Signup = () => {
           <input
             type='password'
             placeholder='Contraseña de registro'
-            className='w-full p-3  border-gray-300 border'
+            className='w-full p-3  border-gray-300 border rounded-md'
             {...register('password', {
               required: 'La contraseña es obligatoria',
               minLength: {
@@ -119,7 +119,7 @@ export const Signup = () => {
             id='confirmPassword'
             type='password'
             placeholder='Repite la contraseña de registro'
-            className='w-full p-3  border-gray-300 border'
+            className='w-full p-3  border-gray-300 border rounded-md'
             {...register('confirmPassword', {
               required: 'Repetir la contraseña es obligatorio',
               validate: (value) =>
@@ -135,7 +135,7 @@ export const Signup = () => {
         <input
           type='submit'
           value='Registrarme'
-          className='bg-fuchsia-600 hover:bg-fuchsia-700 w-full p-3  text-white font-black  text-xl cursor-pointer'
+          className='bg-fuchsia-600 hover:bg-fuchsia-700 w-full p-3  text-white font-black  text-xl cursor-pointer rounded-md'
         />
       </form>
 

@@ -127,3 +127,45 @@ export const login = async (req: Request, res: Response) => {
       .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
   }
 }
+
+export const requestConfirmToken = async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body
+    const user = await User.findOne({ email })
+
+    if (user === null) {
+      return res
+        .status(404)
+        .json({ ok: false, message: 'El email no esta registrado' })
+    }
+
+    if (user.confirmed) {
+      return res
+        .status(403)
+        .json({ ok: false, message: 'La cuenta ya ha sido confirmada' })
+    }
+
+    const token = new Token()
+    token.token = generateToken()
+    token.user = user.id
+
+    await sendConfirmationEmail({
+      email: user.email,
+      name: user.name,
+      token: token.token
+    })
+
+    await Promise.allSettled([user.save(), token.save()])
+
+    res.status(200).json({
+      ok: true,
+      message:
+        'Se envió un nuevo token, revisa tu email para confirmar tu cuenta'
+    })
+  } catch (error) {
+    console.log(error)
+    res
+      .status(500)
+      .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
+  }
+}

@@ -8,6 +8,7 @@ import { ProjectDetails } from '@/pages/projects/ProjectDetails'
 import { Login } from './pages/auth/Login'
 import { Signup } from './pages/auth/Signup'
 import { Confirm } from './pages/auth/Confirm'
+import { RequestToken } from './pages/auth/RequestToken'
 
 const Router = () => {
   return (
@@ -53,6 +54,12 @@ const Router = () => {
             index
             path='/auth/confirmar-cuenta'
             element={<Confirm />}
+          />
+
+          <Route
+            index
+            path='/auth/solicitar-codigo'
+            element={<RequestToken />}
           />
         </Route>
       </Routes>
