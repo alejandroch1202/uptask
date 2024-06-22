@@ -9,6 +9,9 @@ import { Login } from './pages/auth/Login'
 import { Signup } from './pages/auth/Signup'
 import { Confirm } from './pages/auth/Confirm'
 import { RequestToken } from './pages/auth/RequestToken'
+import { NotFound } from './pages/notFound'
+import { ForgotPassword } from './pages/auth/ForgotPassword'
+import { NewPassword } from './pages/auth/NewPassword'
 
 const Router = () => {
   return (
@@ -39,27 +42,38 @@ const Router = () => {
 
         <Route element={<AuthLayout />}>
           <Route
-            index
             path='/auth/iniciar-sesion'
             element={<Login />}
           />
 
           <Route
-            index
             path='/auth/registrarse'
             element={<Signup />}
           />
 
           <Route
-            index
             path='/auth/confirmar-cuenta'
             element={<Confirm />}
           />
 
           <Route
-            index
             path='/auth/solicitar-codigo'
             element={<RequestToken />}
+          />
+
+          <Route
+            path='/auth/olvide-clave'
+            element={<ForgotPassword />}
+          />
+
+          <Route
+            path='/auth/cambiar-clave'
+            element={<NewPassword />}
+          />
+
+          <Route
+            path='*'
+            element={<NotFound />}
           />
         </Route>
       </Routes>

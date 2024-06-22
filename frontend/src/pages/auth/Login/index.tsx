@@ -103,10 +103,16 @@ export const Login = () => {
 
       <nav className='mt-10 flex flex-col space-y-4'>
         <Link
+          to={'/auth/olvide-clave'}
+          className='text-center text-gray-300 font-normal'
+        >
+          Olvidé mi contraseña
+        </Link>
+        <Link
           to={'/auth/registrarse'}
           className='text-center text-gray-300 font-normal'
         >
-          ¿No tienes cuenta? Crear cuenta
+          ¿No tienes cuenta? <b>Crear cuenta</b>
         </Link>
       </nav>
     </>

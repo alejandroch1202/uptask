@@ -3,13 +3,18 @@ import {
   signup,
   confirmAccount,
   login,
-  requestConfirmToken
+  requestConfirmToken,
+  forgotPassword,
+  validateToken,
+  updatePassword
 } from './../controllers/auth'
 import {
   signupBody,
   confirmAccountBody,
   loginHeader,
-  requestConfirmTokenBody
+  requestConfirmTokenBody,
+  updatePasswordBody,
+  updatePasswordParam
 } from '../validators/auth'
 import { handleValidation } from '../middlewares/validation'
 
@@ -31,6 +36,28 @@ router.post(
   requestConfirmTokenBody,
   handleValidation,
   requestConfirmToken
+)
+
+router.post(
+  '/forgot-password',
+  requestConfirmTokenBody,
+  handleValidation,
+  forgotPassword
+)
+
+router.post(
+  '/validate-token',
+  confirmAccountBody,
+  handleValidation,
+  validateToken
+)
+
+router.post(
+  '/update-password/:token',
+  updatePasswordParam,
+  updatePasswordBody,
+  handleValidation,
+  updatePassword
 )
 
 export default router

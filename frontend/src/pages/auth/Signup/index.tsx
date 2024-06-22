@@ -3,10 +3,11 @@ import { useMutation } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 import type { SignupForm } from '@/types/index'
 import { ErrorMessage } from '@/components/ErrorMessage'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { signup } from '@/services/auth'
 
 export const Signup = () => {
+  const navigate = useNavigate()
   const initialValues: SignupForm = {
     name: '',
     email: '',
@@ -29,6 +30,7 @@ export const Signup = () => {
     onSuccess: (data) => {
       toast.success(data.message)
       reset()
+      navigate('/auth/confirmar-cuenta')
     },
     onError: (error) => {
       toast.error(error.message)
@@ -141,10 +143,16 @@ export const Signup = () => {
 
       <nav className='mt-10 flex flex-col space-y-4'>
         <Link
+          to={'/auth/olvide-clave'}
+          className='text-center text-gray-300 font-normal'
+        >
+          Olvidé mi contraseña
+        </Link>
+        <Link
           to={'/auth/iniciar-sesion'}
           className='text-center text-gray-300 font-normal'
         >
-          ¿Ya tienes cuenta? Iniciar sesión
+          ¿Ya tienes cuenta? <b>Iniciar sesión</b>
         </Link>
       </nav>
     </>

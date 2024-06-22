@@ -1,17 +1,16 @@
-import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import type { RequestConfirmTokenForm } from '@/types/index'
+import { Link, useNavigate } from 'react-router-dom'
+import type { ForgotPasswordForm } from '@/types/index'
 import { ErrorMessage } from '@/components/ErrorMessage'
 import { useMutation } from '@tanstack/react-query'
-import { requestConfirmToken } from '@/services/auth'
 import { toast } from 'react-toastify'
+import { forgotPassword } from '@/services/auth'
 
-export const RequestToken = () => {
+export const ForgotPassword = () => {
   const navigate = useNavigate()
-  const initialValues: RequestConfirmTokenForm = {
+  const initialValues: ForgotPasswordForm = {
     email: ''
   }
-
   const {
     register,
     handleSubmit,
@@ -20,34 +19,34 @@ export const RequestToken = () => {
   } = useForm({ defaultValues: initialValues })
 
   const { mutate } = useMutation({
-    mutationFn: requestConfirmToken,
+    mutationFn: forgotPassword,
     onSuccess: (data) => {
       toast.success(data.message)
       reset()
-      navigate('/auth/confirmar-cuenta')
+      navigate('/auth/cambiar-clave')
     },
     onError: (error) => {
       toast.error(error.message)
     }
   })
 
-  const handleRequestToken = (formData: RequestConfirmTokenForm) => {
+  const handleForgotPassword = (formData: ForgotPasswordForm) => {
     mutate(formData)
   }
 
   return (
     <>
       <h1 className='text-5xl font-black text-white'>
-        Solicitar código de confirmación
+        ¿Olvidaste tu contraseña?
       </h1>
       <p className='text-2xl font-light text-white mt-5'>
-        Coloca tu e-mail para recibir {''}
-        <span className=' text-fuchsia-500 font-bold'> un nuevo código</span>
+        Llena el formulario para {''}
+        <span className=' text-fuchsia-500 font-bold'> crear tu cuenta</span>
       </p>
 
       <form
-        onSubmit={handleSubmit(handleRequestToken)}
-        className='space-y-8 p-10 rounded-lg bg-white mt-10'
+        onSubmit={handleSubmit(handleForgotPassword)}
+        className='space-y-8 p-10 bg-white rounded-lg mt-10'
         noValidate
       >
         <div className='flex flex-col gap-5'>
@@ -55,18 +54,18 @@ export const RequestToken = () => {
             className='font-normal text-2xl'
             htmlFor='email'
           >
-            Email
+            Correo
           </label>
           <input
             id='email'
             type='email'
-            placeholder='Email de Registro'
-            className='w-full p-3 rounded-lg border-gray-300 border'
+            placeholder='Correo de registro'
+            className='w-full p-3  border-gray-300 border rounded-lg'
             {...register('email', {
-              required: 'El Email de registro es obligatorio',
+              required: 'El correo de registro es obligatorio',
               pattern: {
                 value: /\S+@\S+\.\S+/,
-                message: 'E-mail no válido'
+                message: 'Correo no válido'
               }
             })}
           />
@@ -77,8 +76,8 @@ export const RequestToken = () => {
 
         <input
           type='submit'
-          value='Enviar código'
-          className='bg-fuchsia-600 hover:bg-fuchsia-700 w-full p-3 rounded-lg text-white font-black  text-xl cursor-pointer'
+          value='Enviar instrucciones'
+          className='bg-fuchsia-600 hover:bg-fuchsia-700 w-full p-3  text-white font-black  text-xl cursor-pointer rounded-md'
         />
       </form>
 
@@ -89,11 +88,12 @@ export const RequestToken = () => {
         >
           ¿Ya tienes cuenta? <b>Iniciar sesión</b>
         </Link>
+
         <Link
-          to='/auth/olvide-clave'
+          to='/auth/registrarse'
           className='text-center text-gray-300 font-normal'
         >
-          ¿Olvidaste tu contraseña? <b>Restablecer</b>
+          ¿No tienes cuenta? <b>Crear cuenta</b>
         </Link>
       </nav>
     </>

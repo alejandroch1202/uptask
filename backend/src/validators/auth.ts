@@ -1,4 +1,4 @@
-import { body, header } from 'express-validator'
+import { body, header, param } from 'express-validator'
 
 export const signupBody = [
   body('name').notEmpty().withMessage('User name is required'),
@@ -24,4 +24,20 @@ export const loginHeader = [
 
 export const requestConfirmTokenBody = [
   body('email').isEmail().withMessage('Invalid email')
+]
+
+export const updatePasswordBody = [
+  body('password')
+    .isLength({ min: 8 })
+    .withMessage('Password must be minimum 8 characters'),
+  body('confirmPassword').custom((value, { req }) => {
+    if (value !== req.body.password) {
+      throw new Error('Password confirmation does not match password')
+    }
+    return true
+  })
+]
+
+export const updatePasswordParam = [
+  param('token').isLength({ min: 6, max: 6 }).withMessage('Invalid token')
 ]

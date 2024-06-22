@@ -7,7 +7,7 @@ import {
   hashPassword
 } from '../utils'
 import Token from '../models/Token'
-import { sendConfirmationEmail } from '../emails/auth'
+import { sendConfirmationEmail, forgotPasswordEmail } from '../emails/auth'
 
 export const signup = async (req: Request, res: Response) => {
   try {
@@ -159,8 +159,101 @@ export const requestConfirmToken = async (req: Request, res: Response) => {
 
     res.status(200).json({
       ok: true,
-      message:
-        'Se envió un nuevo token, revisa tu email para confirmar tu cuenta'
+      message: 'Sigue las instrucciones enviadas a tu correo'
+    })
+  } catch (error) {
+    console.log(error)
+    res
+      .status(500)
+      .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
+  }
+}
+
+export const forgotPassword = async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body
+    const user = await User.findOne({ email })
+
+    if (user === null) {
+      return res
+        .status(404)
+        .json({ ok: false, message: 'El email no esta registrado' })
+    }
+
+    const token = new Token()
+    token.token = generateToken()
+    token.user = user.id
+    await token.save()
+
+    await forgotPasswordEmail({
+      email: user.email,
+      name: user.name,
+      token: token.token
+    })
+
+    res.status(200).json({
+      ok: true,
+      message: 'Sigue las instrucciones enviadas a tu correo'
+    })
+  } catch (error) {
+    console.log(error)
+    res
+      .status(500)
+      .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
+  }
+}
+
+export const validateToken = async (req: Request, res: Response) => {
+  try {
+    const { token } = req.body
+    const tokenExists = await Token.findOne({ token })
+
+    if (tokenExists === null) {
+      return res.status(401).json({ ok: false, message: 'Código no valido' })
+    }
+
+    const user = await User.findById(tokenExists.user)
+
+    if (user === null) {
+      return res
+        .status(404)
+        .json({ ok: false, message: 'Usuario no encontrado' })
+    }
+
+    res.status(200).json({
+      ok: true,
+      message: 'Código validado. Ahora define tu nueva contraseña'
+    })
+  } catch (error) {
+    console.log(error)
+    res
+      .status(500)
+      .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
+  }
+}
+
+export const updatePassword = async (req: Request, res: Response) => {
+  try {
+    const { token } = req.params
+    const tokenExists = await Token.findOne({ token })
+    if (tokenExists === null) {
+      return res.status(401).json({ ok: false, message: 'Código no valido' })
+    }
+
+    const user = await User.findById(tokenExists.user)
+    if (user === null) {
+      return res
+        .status(404)
+        .json({ ok: false, message: 'Usuario no encontrado' })
+    }
+
+    const { password } = req.body
+    user.password = hashPassword(password)
+    await Promise.allSettled([user.save(), tokenExists.deleteOne()])
+
+    res.status(200).json({
+      ok: true,
+      message: 'Contraseña restablecida con éxito'
     })
   } catch (error) {
     console.log(error)
