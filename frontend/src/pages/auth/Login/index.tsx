@@ -21,8 +21,8 @@ export const Login = () => {
   const { mutate } = useMutation({
     mutationFn: login,
     onSuccess: (data) => {
-      navigate('/')
       toast.success(data.message)
+      navigate('/')
     },
     onError: (error) => {
       toast.error(error.message)

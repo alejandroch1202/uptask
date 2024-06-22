@@ -50,6 +50,7 @@ export const login = async (formData: LoginForm) => {
     const encode = btoa(`${email}:${password}`)
     api.defaults.headers.common.authorization = `Basic ${encode}`
     const { data } = await api.post('/auth/login')
+    localStorage.setItem('token', data.token)
     return data
   } catch (error) {
     if (isAxiosError(error) && error.response !== undefined) {

@@ -3,6 +3,7 @@ import User from '../models/User'
 import {
   comparePassword,
   extractCredentials,
+  generateJwt,
   generateToken,
   hashPassword
 } from '../utils'
@@ -119,7 +120,11 @@ export const login = async (req: Request, res: Response) => {
         .json({ ok: false, message: 'Credenciales inválidas' })
     }
 
-    res.status(200).json({ ok: true, message: 'Sesión iniciada correctamente' })
+    const token = generateJwt({ id: user.id, name: user.name })
+
+    res
+      .status(200)
+      .json({ ok: true, message: 'Sesión iniciada correctamente', token })
   } catch (error) {
     console.log(error)
     res
