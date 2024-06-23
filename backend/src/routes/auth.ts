@@ -6,7 +6,8 @@ import {
   requestConfirmToken,
   forgotPassword,
   validateToken,
-  updatePassword
+  updatePassword,
+  getUserInfo
 } from './../controllers/auth'
 import {
   signupBody,
@@ -17,6 +18,7 @@ import {
   updatePasswordParam
 } from '../validators/auth'
 import { handleValidation } from '../middlewares/validation'
+import { authenticate } from '../middlewares/auth'
 
 const router = Router()
 
@@ -59,5 +61,7 @@ router.post(
   handleValidation,
   updatePassword
 )
+
+router.get('/user', authenticate, getUserInfo)
 
 export default router

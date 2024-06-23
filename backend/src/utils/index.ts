@@ -22,15 +22,13 @@ export const extractCredentials = (authorization: string) => {
 
 interface JwtPayload {
   id: Types.ObjectId
-  name: string
 }
 
-export const generateJwt = ({ id, name }: JwtPayload) => {
+export const generateJwt = ({ id }: JwtPayload) => {
   const secret = process.env.JWT_SECRET!
   return jwt.sign(
     {
-      sub: id,
-      name
+      sub: id
     },
     secret,
     {

@@ -71,3 +71,14 @@ export type UpdatePasswordForm = Pick<
   Auth,
   'password' | 'confirmPassword' | 'token'
 >
+
+export const userSchema = authSchema
+  .pick({
+    name: true,
+    email: true
+  })
+  .extend({
+    _id: z.string()
+  })
+
+export type User = z.infer<typeof userSchema>

@@ -120,7 +120,7 @@ export const login = async (req: Request, res: Response) => {
         .json({ ok: false, message: 'Credenciales inválidas' })
     }
 
-    const token = generateJwt({ id: user.id, name: user.name })
+    const token = generateJwt({ id: user.id })
 
     res
       .status(200)
@@ -266,4 +266,11 @@ export const updatePassword = async (req: Request, res: Response) => {
       .status(500)
       .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
   }
+}
+
+export const getUserInfo = async (req: Request, res: Response) => {
+  res.status(200).json({
+    ok: true,
+    user: req.user
+  })
 }
