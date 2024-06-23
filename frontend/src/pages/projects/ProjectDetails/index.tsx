@@ -5,6 +5,7 @@ import { CreateTaskModal } from '@/components/tasks/CreateTaskModal'
 import { TaskList } from '@/components/tasks/TasksList'
 import { EditTaskData } from '@/components/tasks/EditTaskData'
 import { TaskDetailsModal } from '@/components/tasks/TaskDetailsModal'
+import { Spinner } from '@/components/Spinner'
 
 export const ProjectDetails = () => {
   const navigate = useNavigate()
@@ -15,7 +16,7 @@ export const ProjectDetails = () => {
     retry: false
   })
 
-  if (isLoading) return <p>Cargando...</p>
+  if (isLoading) return <Spinner />
   if (isError) return <Navigate to={'/'} />
   if (data !== undefined) {
     return (

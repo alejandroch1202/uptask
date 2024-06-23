@@ -2,6 +2,7 @@ import { Navigate, useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { findProject } from '@/services/project'
 import { EditProjectForm } from '@/components/projects/EditProjectForm'
+import { Spinner } from '@/components/Spinner'
 
 export const EditProject = () => {
   const { projectId } = useParams()
@@ -11,7 +12,7 @@ export const EditProject = () => {
     retry: false
   })
 
-  if (isLoading) return <p>Cargando...</p>
+  if (isLoading) return <Spinner />
   if (isError) return <Navigate to={'/'} />
   if (data !== undefined) {
     return (

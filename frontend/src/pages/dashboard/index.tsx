@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { listProjects, removeProject } from '@/services/project'
 import { toast } from 'react-toastify'
+import { Spinner } from '@/components/Spinner'
 
 export const Dashboard = () => {
   const { data, isLoading } = useQuery({
@@ -31,7 +32,7 @@ export const Dashboard = () => {
     }
   })
 
-  if (isLoading) return <p>Cargando...</p>
+  if (isLoading) return <Spinner />
 
   return (
     <>
@@ -136,17 +137,31 @@ export const Dashboard = () => {
           ))}
         </ul>
       ) : (
-        <p className='text-center py-20'>
-          No hay proyectos aún, {''}
-          <span>
-            <Link
-              to={'/proyectos/crear'}
-              className='text-fuchsia-500 font-bold'
+        <div className='text-center'>
+          <div className='max-w-96 mx-auto'>
+            <svg
+              className='mx-auto h-12 w-12 text-gray-400'
+              fill='none'
+              viewBox='0 0 24 24'
+              stroke='#a855f7'
+              aria-hidden='true'
             >
-              crea uno aquí
-            </Link>
-          </span>
-        </p>
+              <path
+                vectorEffect='non-scaling-stroke'
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                strokeWidth={2}
+                d='M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z'
+              />
+            </svg>
+            <h3 className='mt-2 font-medium text-gray-900'>
+              No hay proyectos aún
+            </h3>
+            <p className='mt-1 text-purple-600'>
+              Empieza creando un nuevo proyecto
+            </p>
+          </div>
+        </div>
       )}
     </>
   )

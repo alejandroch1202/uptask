@@ -4,13 +4,14 @@ import 'react-toastify/dist/ReactToastify.css'
 import { Logo } from '@/components/Logo'
 import { NavMenu } from '@/components/NavMenu'
 import { useAuth } from '@/hooks/useAuth'
+import { Spinner } from '@/components/Spinner'
 
 export const AppLayout = () => {
   const { data, isLoading, isError } = useAuth()
 
-  if (isLoading === true) return <p>Cargando...</p>
+  if (isLoading) return <Spinner />
 
-  if (isError === true) return <Navigate to={'/auth/iniciar-sesion'} />
+  if (isError) return <Navigate to={'/auth/iniciar-sesion'} />
 
   if (data !== undefined) {
     return (
