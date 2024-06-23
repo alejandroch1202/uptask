@@ -6,12 +6,14 @@ import {
   type PopulatedDoc
 } from 'mongoose'
 import type { ITask } from './Task'
+import type { IUser } from './User'
 
 export interface IProject extends Document {
   name: string
   client: string
   description: string
   tasks: Array<PopulatedDoc<ITask & Document>>
+  manager: PopulatedDoc<IUser & Document>
 }
 
 const projectSchema = new Schema(
@@ -34,7 +36,12 @@ const projectSchema = new Schema(
         type: Types.ObjectId,
         ref: 'Tasks'
       }
-    ]
+    ],
+    manager: {
+      type: Types.ObjectId,
+      ref: 'Users',
+      required: true
+    }
   },
   {
     timestamps: true

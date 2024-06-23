@@ -40,9 +40,12 @@ export const NavMenu = () => {
               Mis Proyectos
             </Link>
             <button
+              onClick={() => {
+                localStorage.removeItem('token')
+                window.location.replace('/auth/iniciar-sesion')
+              }}
               className='block p-2 w-full text-left hover:text-purple-950 hover:bg-purple-100'
               type='button'
-              onClick={() => {}}
             >
               Cerrar Sesión
             </button>

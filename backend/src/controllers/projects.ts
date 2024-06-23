@@ -5,6 +5,7 @@ import Task from '../models/Task'
 export const create = async (req: Request, res: Response) => {
   try {
     const project = new Project(req.body)
+    project.manager = req.user.id
     await project.save()
     res.status(201).json({ ok: true, message: 'Proyecto creado correctamente' })
   } catch (error) {
@@ -17,7 +18,8 @@ export const create = async (req: Request, res: Response) => {
 
 export const list = async (req: Request, res: Response) => {
   try {
-    const projects = await Project.find({})
+    const { id } = req.user
+    const projects = await Project.find({ manager: id })
     res.status(200).json({ ok: true, projects })
   } catch (error) {
     console.log(error)
@@ -28,8 +30,15 @@ export const list = async (req: Request, res: Response) => {
 }
 
 export const find = async (req: Request, res: Response) => {
-  const projectPopulated = await req.project.populate('tasks')
   try {
+    const { id } = req.user
+    const { manager } = req.project
+
+    // eslint-disable-next-line @typescript-eslint/no-base-to-string
+    if (manager === undefined || manager.toString() !== id.toString()) {
+      return res.status(403).json({ ok: false, message: 'Acción no válida' })
+    }
+    const projectPopulated = await req.project.populate('tasks')
     res.status(200).json({ ok: true, project: projectPopulated })
   } catch (error) {
     console.log(error)
@@ -41,6 +50,14 @@ export const find = async (req: Request, res: Response) => {
 
 export const update = async (req: Request, res: Response) => {
   try {
+    const { id } = req.user
+    const { manager } = req.project
+
+    // eslint-disable-next-line @typescript-eslint/no-base-to-string
+    if (manager === undefined || manager.toString() !== id.toString()) {
+      return res.status(403).json({ ok: false, message: 'Acción no válida' })
+    }
+
     const changes = req.body
     req.project.name = changes.name
     req.project.client = changes.client
@@ -60,6 +77,14 @@ export const update = async (req: Request, res: Response) => {
 
 export const remove = async (req: Request, res: Response) => {
   try {
+    const { id } = req.user
+    const { manager } = req.project
+
+    // eslint-disable-next-line @typescript-eslint/no-base-to-string
+    if (manager === undefined || manager.toString() !== id.toString()) {
+      return res.status(403).json({ ok: false, message: 'Acción no válida' })
+    }
+
     await Promise.allSettled([
       Task.deleteMany({ project: req.project.id }),
       req.project.deleteOne()

@@ -1,9 +1,9 @@
 import type { Request, Response, NextFunction } from 'express'
-import Project from '../models/Project'
+import Project, { type IProject } from '../models/Project'
 
 declare module 'express-serve-static-core' {
   interface Request {
-    project: any
+    project: IProject
   }
 }
 

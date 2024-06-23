@@ -4,7 +4,7 @@ import Task, { type ITask } from '../models/Task'
 export const create = async (req: Request, res: Response) => {
   try {
     const task = new Task(req.body)
-    task.project = req.project
+    task.project = req.project.id
     req.project.tasks.push(task)
     await Promise.allSettled([task.save(), req.project.save()])
     res.status(201).json({ ok: true, message: 'Tarea creada correctamente' })
