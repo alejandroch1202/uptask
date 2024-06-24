@@ -13,13 +13,13 @@ export const authenticate = async (
   res: Response,
   next: NextFunction
 ) => {
-  const authHeaders = req.get('authorization')
-
-  if (authHeaders === undefined) {
-    return res.status(401).json({ ok: false, message: 'Unauthenticated' })
-  }
-
   try {
+    const authHeaders = req.get('authorization')
+
+    if (authHeaders === undefined) {
+      return res.status(401).json({ ok: false, message: 'Unauthenticated' })
+    }
+
     const token = authHeaders.split(' ')[1]
     const decoded = verifyJwt(token)
     const user = await User.findById(decoded.sub).select('_id name email')

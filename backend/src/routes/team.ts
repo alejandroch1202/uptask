@@ -1,6 +1,10 @@
 import { Router } from 'express'
 import { authenticate } from '../middlewares/auth'
-import { validateFindByEmail, validateFindById } from '../validators/team'
+import {
+  validateDeleteById,
+  validateFindByEmail,
+  validateFindById
+} from '../validators/team'
 import { handleValidation } from '../middlewares/validation'
 import {
   addUserToProject,
@@ -32,8 +36,8 @@ router.post(
 )
 
 router.delete(
-  '/:projectId/team',
-  validateFindById,
+  '/:projectId/team/:id',
+  validateDeleteById,
   handleValidation,
   removeUserFromProject
 )

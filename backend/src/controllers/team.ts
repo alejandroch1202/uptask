@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express'
-import User from '../models/User'
+import User, { type IUser } from '../models/User'
 
 export const addUserToProject = async (req: Request, res: Response) => {
   try {
@@ -67,9 +67,9 @@ export const findByEmail = async (req: Request, res: Response) => {
 
 export const removeUserFromProject = async (req: Request, res: Response) => {
   try {
-    const { id } = req.body
+    const { id } = req.params
 
-    if (!req.project.team.includes(id)) {
+    if (!req.project.team.includes(id as IUser['id'])) {
       return res
         .status(409)
         .json({ ok: false, message: 'El usuario no existe en el proyecto' })

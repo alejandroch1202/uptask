@@ -1,5 +1,5 @@
 import { isAxiosError } from 'axios'
-import { api } from '@/config/axios'
+import { api, apiLogin } from '@/config/axios'
 import {
   userSchema,
   type ForgotPasswordForm,
@@ -49,8 +49,15 @@ export const login = async (formData: LoginForm) => {
 
   try {
     const encode = btoa(`${email}:${password}`)
-    api.defaults.headers.common.authorization = `Basic ${encode}`
-    const { data } = await api.post('/auth/login')
+    const { data } = await apiLogin.post(
+      '/auth/login',
+      {},
+      {
+        headers: {
+          Authorization: `Basic ${encode}`
+        }
+      }
+    )
     localStorage.setItem('token', data.token)
     return data
   } catch (error) {

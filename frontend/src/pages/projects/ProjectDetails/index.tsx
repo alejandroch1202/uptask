@@ -17,7 +17,7 @@ export const ProjectDetails = () => {
   })
 
   if (isLoading) return <Spinner />
-  if (isError) return <Navigate to={'/404'} />
+  if (isError) return <Navigate to={'/auth/iniciar-sesion'} />
   if (data !== undefined) {
     return (
       <>
