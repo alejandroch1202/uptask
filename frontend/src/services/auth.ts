@@ -105,6 +105,7 @@ export const getUserInfo = async () => {
     }
   } catch (error) {
     if (isAxiosError(error) && error.response !== undefined) {
+      localStorage.removeItem('token')
       throw new Error(error.response.data.message)
     }
   }

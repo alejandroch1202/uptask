@@ -1,6 +1,6 @@
 import type { FieldErrors, UseFormRegister } from 'react-hook-form'
 import type { DraftTask } from '@/types/index'
-import { ErrorMessage } from '@/components/ErrorMessage'
+import { ErrorMessage } from '@/components/common/ErrorMessage'
 
 interface TaskFormProps {
   errors: FieldErrors<DraftTask>

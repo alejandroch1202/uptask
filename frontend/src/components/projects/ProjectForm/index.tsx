@@ -1,5 +1,5 @@
 import type { FieldErrors, UseFormRegister } from 'react-hook-form'
-import { ErrorMessage } from '@/components/ErrorMessage'
+import { ErrorMessage } from '@/components/common/ErrorMessage'
 import type { DraftProject } from '@/types/index'
 
 interface ProjectFormProps {

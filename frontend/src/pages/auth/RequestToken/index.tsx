@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import type { RequestConfirmTokenForm } from '@/types/index'
-import { ErrorMessage } from '@/components/ErrorMessage'
+import { ErrorMessage } from '@/components/common/ErrorMessage'
 import { useMutation } from '@tanstack/react-query'
 import { requestConfirmToken } from '@/services/auth'
 import { toast } from 'react-toastify'

@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import type { ForgotPasswordForm } from '@/types/index'
-import { ErrorMessage } from '@/components/ErrorMessage'
+import { ErrorMessage } from '@/components/common/ErrorMessage'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 import { forgotPassword } from '@/services/auth'

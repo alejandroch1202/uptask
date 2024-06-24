@@ -8,7 +8,6 @@ export const projectSchema = z.object({
 })
 
 export type Project = z.infer<typeof projectSchema>
-
 export type DraftProject = Pick<Project, 'name' | 'client' | 'description'>
 
 export const dashboardProjectSchema = z.array(
@@ -41,7 +40,6 @@ export const taskSchema = z.object({
 })
 
 export type Task = z.infer<typeof taskSchema>
-
 export type DraftTask = Pick<Project, 'name' | 'description'>
 
 const authSchema = z.object({
@@ -53,20 +51,14 @@ const authSchema = z.object({
 })
 
 export type Auth = z.infer<typeof authSchema>
-
 export type LoginForm = Pick<Auth, 'email' | 'password'>
-
 export type SignupForm = Pick<
   Auth,
   'name' | 'email' | 'password' | 'confirmPassword'
 >
-
 export type RequestConfirmTokenForm = Pick<Auth, 'email'>
-
 export type ForgotPasswordForm = Pick<Auth, 'email'>
-
 export type ResetPasswordForm = Pick<Auth, 'password' | 'confirmPassword'>
-
 export type UpdatePasswordForm = Pick<
   Auth,
   'password' | 'confirmPassword' | 'token'
@@ -82,3 +74,12 @@ export const userSchema = authSchema
   })
 
 export type User = z.infer<typeof userSchema>
+
+export const teamMemberSchema = userSchema.pick({
+  _id: true,
+  name: true,
+  email: true
+})
+
+export type TeamMember = z.infer<typeof teamMemberSchema>
+export type TeamMemberForm = Pick<TeamMember, 'email'>

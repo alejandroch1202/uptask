@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { listProjects, removeProject } from '@/services/project'
 import { toast } from 'react-toastify'
-import { Spinner } from '@/components/Spinner'
+import { Spinner } from '@/components/common/Spinner'
 
 export const Dashboard = () => {
   const { data, isLoading } = useQuery({

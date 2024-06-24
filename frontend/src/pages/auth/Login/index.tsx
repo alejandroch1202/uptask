@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
 import type { LoginForm } from '@/types/index'
-import { ErrorMessage } from '@/components/ErrorMessage'
+import { ErrorMessage } from '@/components/common/ErrorMessage'
 import { Link, useNavigate } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
 import { login } from '@/services/auth'

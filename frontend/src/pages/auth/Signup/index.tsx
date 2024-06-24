@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 import type { SignupForm } from '@/types/index'
-import { ErrorMessage } from '@/components/ErrorMessage'
+import { ErrorMessage } from '@/components/common/ErrorMessage'
 import { Link, useNavigate } from 'react-router-dom'
 import { signup } from '@/services/auth'
 

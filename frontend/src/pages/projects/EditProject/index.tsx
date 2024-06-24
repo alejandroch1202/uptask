@@ -2,7 +2,7 @@ import { Navigate, useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { findProject } from '@/services/project'
 import { EditProjectForm } from '@/components/projects/EditProjectForm'
-import { Spinner } from '@/components/Spinner'
+import { Spinner } from '@/components/common/Spinner'
 
 export const EditProject = () => {
   const { projectId } = useParams()

@@ -1,17 +1,18 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AppLayout } from '@/layouts/AppLayout'
 import { AuthLayout } from '@/layouts/AuthLayout'
-import { Dashboard } from '@/pages/dashboard'
+import { Dashboard } from '@/pages/common/Dashboard'
 import { CreateProject } from '@/pages/projects/CreateProject'
 import { EditProject } from '@/pages/projects/EditProject'
 import { ProjectDetails } from '@/pages/projects/ProjectDetails'
-import { Login } from './pages/auth/Login'
-import { Signup } from './pages/auth/Signup'
-import { Confirm } from './pages/auth/Confirm'
-import { RequestToken } from './pages/auth/RequestToken'
-import { NotFound } from './pages/notFound'
-import { ForgotPassword } from './pages/auth/ForgotPassword'
-import { NewPassword } from './pages/auth/NewPassword'
+import { Login } from '@/pages/auth/Login'
+import { Signup } from '@/pages/auth/Signup'
+import { Confirm } from '@/pages/auth/Confirm'
+import { RequestToken } from '@/pages/auth/RequestToken'
+import { NotFound } from '@/pages/common/NotFound'
+import { ForgotPassword } from '@/pages/auth/ForgotPassword'
+import { NewPassword } from '@/pages/auth/NewPassword'
+import { ProjectTeam } from './pages/projects/ProjectTeam'
 
 const Router = () => {
   return (
@@ -37,6 +38,11 @@ const Router = () => {
           <Route
             path='/proyectos/:projectId/editar'
             element={<EditProject />}
+          />
+
+          <Route
+            path='/proyectos/:projectId/colaboradores'
+            element={<ProjectTeam />}
           />
         </Route>
 

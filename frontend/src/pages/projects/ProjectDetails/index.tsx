@@ -1,11 +1,11 @@
-import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { findProject } from '@/services/project'
 import { CreateTaskModal } from '@/components/tasks/CreateTaskModal'
 import { TaskList } from '@/components/tasks/TasksList'
 import { EditTaskData } from '@/components/tasks/EditTaskData'
 import { TaskDetailsModal } from '@/components/tasks/TaskDetailsModal'
-import { Spinner } from '@/components/Spinner'
+import { Spinner } from '@/components/common/Spinner'
 
 export const ProjectDetails = () => {
   const navigate = useNavigate()
@@ -17,13 +17,13 @@ export const ProjectDetails = () => {
   })
 
   if (isLoading) return <Spinner />
-  if (isError) return <Navigate to={'/'} />
+  if (isError) return <Navigate to={'/404'} />
   if (data !== undefined) {
     return (
       <>
         <h1 className='text-5xl font-black'>{data.name}</h1>
         <p className='text-2xl font-light text-gray-500 mt-5'>
-          {data.description}{' '}
+          {data.description}
         </p>
 
         <nav className='my-5 flex gap-3'>
@@ -36,6 +36,13 @@ export const ProjectDetails = () => {
           >
             Agregar tarea
           </button>
+
+          <Link
+            to={'colaboradores'}
+            className='bg-fuchsia-600 hover:bg-fuchsia-700 px-10 py-3 text-white text-xl font-bold cursor-pointer transition-colors'
+          >
+            Colaboradores
+          </Link>
         </nav>
 
         <TaskList tasks={data.tasks} />

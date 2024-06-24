@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import { ErrorMessage } from '@/components/ErrorMessage'
+import { ErrorMessage } from '@/components/common/ErrorMessage'
 import type { ResetPasswordForm } from '@/types/index'
 import { useMutation } from '@tanstack/react-query'
 import { updatePassword } from '@/services/auth'

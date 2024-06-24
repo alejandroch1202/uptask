@@ -1,10 +1,10 @@
 import { Link, Navigate, Outlet } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { Logo } from '@/components/Logo'
-import { NavMenu } from '@/components/NavMenu'
+import { Logo } from '@/components/common/Logo'
+import { NavMenu } from '@/components/common/NavMenu'
 import { useAuth } from '@/hooks/useAuth'
-import { Spinner } from '@/components/Spinner'
+import { Spinner } from '@/components/common/Spinner'
 
 export const AppLayout = () => {
   const { data, isLoading, isError } = useAuth()
