@@ -6,8 +6,12 @@ import { TaskList } from '@/components/tasks/TasksList'
 import { EditTaskData } from '@/components/tasks/EditTaskData'
 import { TaskDetailsModal } from '@/components/tasks/TaskDetailsModal'
 import { Spinner } from '@/components/common/Spinner'
+import { useAuth } from '@/hooks/useAuth'
+import { isManager } from '@/utils/policies'
+import { useMemo } from 'react'
 
 export const ProjectDetails = () => {
+  const { data: user, isLoading: userLoading } = useAuth()
   const navigate = useNavigate()
   const { projectId } = useParams()
   const { data, isLoading, isError } = useQuery({
@@ -16,9 +20,11 @@ export const ProjectDetails = () => {
     retry: false
   })
 
-  if (isLoading) return <Spinner />
-  if (isError) return <Navigate to={'/auth/iniciar-sesion'} />
-  if (data !== undefined) {
+  const isAdmin = useMemo(() => data?.manager === user?._id, [data, user])
+
+  if (isLoading && userLoading) return <Spinner />
+  if (isError) return <Navigate to={'/404'} />
+  if (data !== undefined && user !== undefined) {
     return (
       <>
         <h1 className='text-5xl font-black'>{data.name}</h1>
@@ -26,26 +32,31 @@ export const ProjectDetails = () => {
           {data.description}
         </p>
 
-        <nav className='my-5 flex gap-3'>
-          <button
-            onClick={() => {
-              navigate('?newTask=true')
-            }}
-            type='button'
-            className='bg-purple-400 hover:bg-purple-400 px-10 py-3 text-white text-xl font-bold cursor-pointer transition-colors'
-          >
-            Agregar tarea
-          </button>
+        {isManager(data.manager, user._id) && (
+          <nav className='my-5 flex gap-3'>
+            <button
+              onClick={() => {
+                navigate('?newTask=true')
+              }}
+              type='button'
+              className='bg-purple-400 hover:bg-purple-400 px-10 py-3 text-white text-xl font-bold cursor-pointer transition-colors'
+            >
+              Agregar tarea
+            </button>
 
-          <Link
-            to={'colaboradores'}
-            className='bg-fuchsia-600 hover:bg-fuchsia-700 px-10 py-3 text-white text-xl font-bold cursor-pointer transition-colors'
-          >
-            Colaboradores
-          </Link>
-        </nav>
+            <Link
+              to={'colaboradores'}
+              className='bg-fuchsia-600 hover:bg-fuchsia-700 px-10 py-3 text-white text-xl font-bold cursor-pointer transition-colors'
+            >
+              Colaboradores
+            </Link>
+          </nav>
+        )}
 
-        <TaskList tasks={data.tasks} />
+        <TaskList
+          tasks={data.tasks}
+          isAdmin={isAdmin}
+        />
 
         <CreateTaskModal />
         <EditTaskData />

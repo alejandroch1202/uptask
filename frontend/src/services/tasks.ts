@@ -83,7 +83,6 @@ export const updateTaskStatus = async ({
   status
 }: Pick<TaskApiProps, 'projectId' | 'taskId' | 'status'>) => {
   try {
-    console.log(projectId, taskId, status)
     const { data } = await api.post(
       `/projects/${projectId}/tasks/${taskId}/status`,
       { status }

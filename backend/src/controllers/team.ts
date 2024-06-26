@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express'
 import User, { type IUser } from '../models/User'
+import { serverError } from '../middlewares/validation'
 
 export const addUserToProject = async (req: Request, res: Response) => {
   try {
@@ -26,10 +27,7 @@ export const addUserToProject = async (req: Request, res: Response) => {
       .status(200)
       .json({ ok: true, message: 'Usuario agregado correctamente' })
   } catch (error) {
-    console.log(error)
-    res
-      .status(500)
-      .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
+    serverError(error, res)
   }
 }
 
@@ -38,10 +36,7 @@ export const listMembers = async (req: Request, res: Response) => {
     const { team } = await req.project.populate('team', 'id name email')
     res.status(200).json({ ok: true, team })
   } catch (error) {
-    console.log(error)
-    res
-      .status(500)
-      .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
+    serverError(error, res)
   }
 }
 
@@ -58,10 +53,7 @@ export const findByEmail = async (req: Request, res: Response) => {
 
     res.status(200).json({ ok: true, user })
   } catch (error) {
-    console.log(error)
-    res
-      .status(500)
-      .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
+    serverError(error, res)
   }
 }
 
@@ -85,9 +77,6 @@ export const removeUserFromProject = async (req: Request, res: Response) => {
       .status(200)
       .json({ ok: true, message: 'Usuario eliminado correctamente' })
   } catch (error) {
-    console.log(error)
-    res
-      .status(500)
-      .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
+    serverError(error, res)
   }
 }

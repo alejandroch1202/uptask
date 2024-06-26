@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from 'express'
 import Project, { type IProject } from '../models/Project'
+import { serverError } from './validation'
 
 declare module 'express-serve-static-core' {
   interface Request {
@@ -25,9 +26,6 @@ export const validateProjectExists = async (
     req.project = project
     next()
   } catch (error) {
-    console.log(error)
-    res
-      .status(500)
-      .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
+    serverError(error, res)
   }
 }

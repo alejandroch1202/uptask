@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from 'express'
 import Task, { type ITask } from '../models/Task'
+import { serverError } from './validation'
 
 declare module 'express-serve-static-core' {
   interface Request {
@@ -23,10 +24,7 @@ export const validateTaskExists = async (
     req.task = task
     next()
   } catch (error) {
-    console.log(error)
-    res
-      .status(500)
-      .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
+    serverError(error, res)
   }
 }
 
@@ -43,9 +41,23 @@ export const validateTaskBelongs = async (
     }
     next()
   } catch (error) {
-    console.log(error)
-    res
-      .status(500)
-      .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
+    serverError(error, res)
+  }
+}
+
+export const hasAuthorization = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { manager } = req.project
+    const { id } = req.user
+    if (manager !== undefined && id.toString() !== manager.toString()) {
+      return res.status(400).json({ ok: false, message: 'Acción no válida' })
+    }
+    next()
+  } catch (error) {
+    serverError(error, res)
   }
 }

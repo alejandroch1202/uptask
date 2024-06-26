@@ -9,6 +9,7 @@ import {
 } from '../utils'
 import Token from '../models/Token'
 import { sendConfirmationEmail, forgotPasswordEmail } from '../emails/auth'
+import { serverError } from '../middlewares/validation'
 
 export const signup = async (req: Request, res: Response) => {
   try {
@@ -41,10 +42,7 @@ export const signup = async (req: Request, res: Response) => {
       message: 'Cuenta creada, revisa tu email para confirmarla'
     })
   } catch (error) {
-    console.log(error)
-    res
-      .status(500)
-      .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
+    serverError(error, res)
   }
 }
 
@@ -73,10 +71,7 @@ export const confirmAccount = async (req: Request, res: Response) => {
       .status(200)
       .json({ ok: true, message: 'Cuenta confirmada correctamente' })
   } catch (error) {
-    console.log(error)
-    res
-      .status(500)
-      .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
+    serverError(error, res)
   }
 }
 
@@ -126,10 +121,7 @@ export const login = async (req: Request, res: Response) => {
       .status(200)
       .json({ ok: true, message: 'Sesión iniciada correctamente', token })
   } catch (error) {
-    console.log(error)
-    res
-      .status(500)
-      .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
+    serverError(error, res)
   }
 }
 
@@ -167,10 +159,7 @@ export const requestConfirmToken = async (req: Request, res: Response) => {
       message: 'Sigue las instrucciones enviadas a tu correo'
     })
   } catch (error) {
-    console.log(error)
-    res
-      .status(500)
-      .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
+    serverError(error, res)
   }
 }
 
@@ -201,10 +190,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
       message: 'Sigue las instrucciones enviadas a tu correo'
     })
   } catch (error) {
-    console.log(error)
-    res
-      .status(500)
-      .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
+    serverError(error, res)
   }
 }
 
@@ -230,10 +216,7 @@ export const validateToken = async (req: Request, res: Response) => {
       message: 'Código validado. Ahora define tu nueva contraseña'
     })
   } catch (error) {
-    console.log(error)
-    res
-      .status(500)
-      .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
+    serverError(error, res)
   }
 }
 
@@ -261,10 +244,7 @@ export const updatePassword = async (req: Request, res: Response) => {
       message: 'Contraseña restablecida con éxito'
     })
   } catch (error) {
-    console.log(error)
-    res
-      .status(500)
-      .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
+    serverError(error, res)
   }
 }
 

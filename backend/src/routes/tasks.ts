@@ -13,7 +13,11 @@ import {
   validateStatus
 } from '../validators/tasks'
 import { validateProjectExists } from '../middlewares/projects'
-import { validateTaskExists, validateTaskBelongs } from '../middlewares/tasks'
+import {
+  validateTaskExists,
+  validateTaskBelongs,
+  hasAuthorization
+} from '../middlewares/tasks'
 import { handleValidation } from '../middlewares/validation'
 
 const router = Router()
@@ -22,7 +26,13 @@ router.param('projectId', validateProjectExists)
 router.param('taskId', validateTaskExists)
 router.param('taskId', validateTaskBelongs)
 
-router.post('/:projectId/tasks', validateBody, handleValidation, create)
+router.post(
+  '/:projectId/tasks',
+  hasAuthorization,
+  validateBody,
+  handleValidation,
+  create
+)
 
 router.get('/:projectId/tasks', list)
 
@@ -30,6 +40,7 @@ router.get('/:projectId/tasks/:taskId', validateParam, handleValidation, find)
 
 router.put(
   '/:projectId/tasks/:taskId',
+  hasAuthorization,
   validateParam,
   validateBody,
   handleValidation,
@@ -38,6 +49,7 @@ router.put(
 
 router.delete(
   '/:projectId/tasks/:taskId',
+  hasAuthorization,
   validateParam,
   handleValidation,
   remove

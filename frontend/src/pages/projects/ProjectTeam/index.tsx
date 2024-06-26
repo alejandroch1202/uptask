@@ -39,7 +39,7 @@ export const ProjectTeam = () => {
   })
 
   if (isLoading) return <Spinner />
-  if (isError) return <Navigate to={'404'} />
+  if (isError) return <Navigate to={'/404'} />
 
   if (data !== undefined) {
     return (

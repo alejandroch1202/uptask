@@ -13,7 +13,7 @@ export const EditProject = () => {
   })
 
   if (isLoading) return <Spinner />
-  if (isError) return <Navigate to={'/'} />
+  if (isError) return <Navigate to={'/404'} />
   if (data !== undefined) {
     return (
       <EditProjectForm

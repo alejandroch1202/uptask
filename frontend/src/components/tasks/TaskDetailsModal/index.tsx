@@ -52,7 +52,7 @@ export const TaskDetailsModal = () => {
 
   if (isError) {
     // toast.error(error.message, { toastId: 'error' })
-    return <Navigate to={`/proyectos/${projectId}`} />
+    return <Navigate to={'/404'} />
   }
 
   if (data !== undefined) {
@@ -109,6 +109,25 @@ export const TaskDetailsModal = () => {
                     <p className='text-lg text-slate-500 mb-2'>
                       {data.description}
                     </p>
+
+                    <p className='text-2xl text-gray-500 mb-2'>
+                      Historial de cambios
+                    </p>
+
+                    <ol className='list-decimal'>
+                      {data.updatedBy.map((activity) => (
+                        <li
+                          key={activity._id}
+                          className='my-2 ml-8'
+                        >
+                          <span className='font-bold text-gray-600'>
+                            {statusTranslations[activity.status]} por {''}
+                          </span>
+                          {activity.user.name}
+                        </li>
+                      ))}
+                    </ol>
+
                     <div className='my-5 space-y-3'>
                       <label
                         htmlFor='status'

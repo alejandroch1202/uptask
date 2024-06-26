@@ -3,6 +3,7 @@ import { TaskCard } from '../TaskCard'
 
 interface TaskListProps {
   tasks: Task[]
+  isAdmin: boolean
 }
 
 type GroupedTasks = Record<string, Task[]>
@@ -31,7 +32,7 @@ const statusColors: Record<string, string> = {
   completed: 'border-t-emerald-500'
 }
 
-export const TaskList = ({ tasks }: TaskListProps) => {
+export const TaskList = ({ tasks, isAdmin }: TaskListProps) => {
   const groupedTasks = tasks.reduce((acc, task) => {
     let currentGroup = acc[task.status]
     currentGroup = [...currentGroup, task]
@@ -63,6 +64,7 @@ export const TaskList = ({ tasks }: TaskListProps) => {
                   <TaskCard
                     key={task._id}
                     task={task}
+                    isAdmin={isAdmin}
                   />
                 ))
               )}

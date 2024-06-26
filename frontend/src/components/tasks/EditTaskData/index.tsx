@@ -17,7 +17,7 @@ export const EditTaskData = () => {
     enabled: taskId !== null,
     retry: false
   })
-  if (isError) return <Navigate to={'/'} />
+  if (isError) return <Navigate to={'/404'} />
 
   if (data !== undefined) return <EditTaskModal data={data} />
 }

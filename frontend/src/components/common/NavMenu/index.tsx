@@ -15,7 +15,7 @@ export const NavMenu = ({ name }: { name: string }) => {
 
   const logout = () => {
     localStorage.removeItem('token')
-    queryClient.removeQueries({ queryKey: ['user'] })
+    queryClient.removeQueries()
     navigate('/auth/iniciar-sesion')
   }
 

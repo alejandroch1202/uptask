@@ -12,3 +12,10 @@ export const handleValidation = (
   }
   next()
 }
+
+export const serverError = (error: unknown, res: Response) => {
+  console.log(error)
+  res
+    .status(500)
+    .json({ ok: false, message: 'Hubo un error al procesar tu solicitud' })
+}
