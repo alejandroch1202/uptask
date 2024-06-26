@@ -254,3 +254,89 @@ export const getUserInfo = async (req: Request, res: Response) => {
     user: req.user
   })
 }
+
+export const updateProfile = async (req: Request, res: Response) => {
+  try {
+    const { name, email } = req.body
+
+    const userExists = await User.findOne({ email })
+    if (
+      userExists !== null &&
+      userExists.id.toString() !== req.user.id.toString()
+    ) {
+      return res.status(409).json({
+        ok: true,
+        message: 'El correo ya esta registrado'
+      })
+    }
+
+    req.user.name = name
+    req.user.email = email
+
+    await req.user.save()
+
+    res.status(200).json({
+      ok: true,
+      message: 'Perfil actualizado correctamente'
+    })
+  } catch (error) {
+    serverError(error, res)
+  }
+}
+
+export const changePassword = async (req: Request, res: Response) => {
+  try {
+    const { oldPassword, password } = req.body
+    const user = await User.findById(req.user.id)
+
+    if (user === null) {
+      return res
+        .status(404)
+        .json({ ok: false, message: 'Usuario no encontrado' })
+    }
+
+    const isPasswordMatch = comparePassword(oldPassword, user.password)
+
+    if (!isPasswordMatch) {
+      return res
+        .status(401)
+        .json({ ok: false, message: 'Credenciales inválidas' })
+    }
+
+    user.password = hashPassword(password)
+    await user.save()
+
+    res.status(200).json({
+      ok: true,
+      message: 'Contraseña actualizada correctamente'
+    })
+  } catch (error) {
+    serverError(error, res)
+  }
+}
+
+export const checkPassword = async (req: Request, res: Response) => {
+  try {
+    const { password } = req.body
+
+    const user = await User.findById(req.user.id)
+
+    if (user === null) {
+      return res
+        .status(404)
+        .json({ ok: false, message: 'Usuario no encontrado' })
+    }
+
+    const isPasswordMatch = comparePassword(password, user.password)
+
+    if (!isPasswordMatch) {
+      return res
+        .status(401)
+        .json({ ok: false, message: 'Credenciales inválidas' })
+    }
+
+    res.status(200).json({ ok: true, message: 'Credenciales válidas' })
+  } catch (error) {
+    serverError(error, res)
+  }
+}

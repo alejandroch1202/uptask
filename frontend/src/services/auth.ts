@@ -2,11 +2,14 @@ import { isAxiosError } from 'axios'
 import { api, apiLogin } from '@/config/axios'
 import {
   userSchema,
+  type UserProfileForm,
   type ForgotPasswordForm,
   type LoginForm,
   type RequestConfirmTokenForm,
   type SignupForm,
-  type UpdatePasswordForm
+  type UpdatePasswordForm,
+  type UpdateCurrentPasswordForm,
+  type DeleteProjectForm
 } from '../types'
 
 export const signup = async (formData: SignupForm) => {
@@ -113,6 +116,47 @@ export const getUserInfo = async () => {
   } catch (error) {
     if (isAxiosError(error) && error.response !== undefined) {
       localStorage.removeItem('token')
+      throw new Error(error.response.data.message)
+    }
+  }
+}
+
+export const updateUserInfo = async ({
+  formData
+}: {
+  formData: UserProfileForm
+}) => {
+  try {
+    const { data } = await api.put('/auth/profile', formData)
+    return data
+  } catch (error) {
+    if (isAxiosError(error) && error.response !== undefined) {
+      throw new Error(error.response.data.message)
+    }
+  }
+}
+
+export const updateCurrentPassword = async ({
+  formData
+}: {
+  formData: UpdateCurrentPasswordForm
+}) => {
+  try {
+    const { data } = await api.put('/auth/update-password', formData)
+    return data
+  } catch (error) {
+    if (isAxiosError(error) && error.response !== undefined) {
+      throw new Error(error.response.data.message)
+    }
+  }
+}
+
+export const checkPassword = async (formData: DeleteProjectForm) => {
+  try {
+    const { data } = await api.post('/auth/check-password', formData)
+    return data
+  } catch (error) {
+    if (isAxiosError(error) && error.response !== undefined) {
       throw new Error(error.response.data.message)
     }
   }

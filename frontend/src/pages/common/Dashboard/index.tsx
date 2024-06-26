@@ -7,32 +7,20 @@ import {
   Transition
 } from '@headlessui/react'
 import { EllipsisVerticalIcon, PlusIcon } from '@heroicons/react/20/solid'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Link } from 'react-router-dom'
-import { toast } from 'react-toastify'
-import { listProjects, removeProject } from '@/services/project'
+import { useQuery } from '@tanstack/react-query'
+import { Link, useNavigate } from 'react-router-dom'
+import { listProjects } from '@/services/project'
 import { Spinner } from '@/components/common/Spinner'
 import { useAuth } from '@/hooks/useAuth'
 import { isManager } from '@/utils/policies'
+import { DeleteProjectModal } from '@/components/projects/DeleteProjectModal'
 
 export const Dashboard = () => {
+  const navigate = useNavigate()
   const { data: user, isLoading: userLoading } = useAuth()
   const { data, isLoading } = useQuery({
     queryKey: ['projects'],
     queryFn: listProjects
-  })
-
-  const queryClient = useQueryClient()
-
-  const { mutate } = useMutation({
-    mutationFn: removeProject,
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['projects'] })
-      toast.success(data.message)
-    },
-    onError: (error) => {
-      toast.error(error.message)
-    }
   })
 
   if (isLoading && userLoading) return <Spinner />
@@ -144,7 +132,7 @@ export const Dashboard = () => {
                             <MenuItem>
                               <button
                                 onClick={() => {
-                                  mutate(project._id)
+                                  navigate('' + `?deleteProject=${project._id}`)
                                 }}
                                 type='button'
                                 className='block px-3 py-1 text-sm leading-6 w-full text-start text-red-500 hover:bg-gray-100'
@@ -188,6 +176,8 @@ export const Dashboard = () => {
             </div>
           </div>
         )}
+
+        <DeleteProjectModal />
       </>
     )
   }

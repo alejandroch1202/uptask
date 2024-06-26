@@ -38,7 +38,7 @@ export const NavMenu = ({ name }: { name: string }) => {
           <div className='w-full lg:w-56 shrink rounded-xl bg-white p-4 text-sm font-semibold leading-6 text-gray-900 shadow-lg ring-1 ring-gray-900/5'>
             <p className='border-b border-b-purple-200 text-lg p-2'>{name}</p>
             <Link
-              to='/profile'
+              to='/perfil'
               className='block p-2 hover:text-purple-950 hover:bg-purple-100'
             >
               Mi perfil

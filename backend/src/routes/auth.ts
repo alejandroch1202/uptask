@@ -7,7 +7,10 @@ import {
   forgotPassword,
   validateToken,
   updatePassword,
-  getUserInfo
+  getUserInfo,
+  updateProfile,
+  changePassword,
+  checkPassword
 } from './../controllers/auth'
 import {
   signupBody,
@@ -15,7 +18,10 @@ import {
   loginHeader,
   requestConfirmTokenBody,
   updatePasswordBody,
-  updatePasswordParam
+  updatePasswordParam,
+  profileBody,
+  changePasswordBody,
+  checkPasswordBody
 } from '../validators/auth'
 import { handleValidation } from '../middlewares/validation'
 import { authenticate } from '../middlewares/auth'
@@ -63,5 +69,29 @@ router.post(
 )
 
 router.get('/user', authenticate, getUserInfo)
+
+router.put(
+  '/profile',
+  authenticate,
+  profileBody,
+  handleValidation,
+  updateProfile
+)
+
+router.put(
+  '/update-password',
+  authenticate,
+  changePasswordBody,
+  handleValidation,
+  changePassword
+)
+
+router.post(
+  '/check-password',
+  authenticate,
+  checkPasswordBody,
+  handleValidation,
+  checkPassword
+)
 
 export default router

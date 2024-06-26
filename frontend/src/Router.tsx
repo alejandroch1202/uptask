@@ -13,6 +13,9 @@ import { NotFound } from '@/pages/common/NotFound'
 import { ForgotPassword } from '@/pages/auth/ForgotPassword'
 import { NewPassword } from '@/pages/auth/NewPassword'
 import { ProjectTeam } from './pages/projects/ProjectTeam'
+import { ProfileSettings } from './pages/profile/ProfileSettings'
+import { ChangePassword } from './pages/profile/ChangePassword'
+import { ProfileLayout } from './layouts/ProfileLayout'
 
 const Router = () => {
   return (
@@ -44,6 +47,20 @@ const Router = () => {
             path='/proyectos/:projectId/colaboradores'
             element={<ProjectTeam />}
           />
+
+          <Route element={<ProfileLayout />}>
+            <Route
+              index
+              path='/perfil'
+              element={<ProfileSettings />}
+            />
+
+            <Route
+              index
+              path='/perfil/cambiar-clave'
+              element={<ChangePassword />}
+            />
+          </Route>
         </Route>
 
         <Route element={<AuthLayout />}>
