@@ -23,7 +23,7 @@ export const TaskForm = ({ errors, register }: TaskFormProps) => {
           placeholder='Nombre de la tarea'
           className='w-full p-3  border-gray-300 border'
           {...register('name', {
-            required: 'El nombre de la tarea es obligatoria'
+            required: 'El nombre de la tarea es obligatorio'
           })}
         />
         {errors.name !== undefined && (

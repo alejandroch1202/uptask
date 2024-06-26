@@ -3,6 +3,7 @@ import type { Express } from 'express'
 import auth from './auth'
 import projects from './projects'
 import tasks from './tasks'
+import notes from './notes'
 import team from './team'
 
 export const router = (app: Express) => {
@@ -15,6 +16,8 @@ export const router = (app: Express) => {
   router.use('/projects', projects)
 
   router.use('/projects', tasks)
+
+  router.use('/projects', notes)
 
   router.use('/projects', team)
 }

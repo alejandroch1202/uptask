@@ -27,7 +27,12 @@ export const list = async (req: Request, res: Response) => {
 
 export const find = async (req: Request, res: Response) => {
   try {
-    const populated = await req.task.populate('updatedBy.user', 'id name email')
+    const populated = await (
+      await req.task.populate('updatedBy.user', 'id name email')
+    ).populate({
+      path: 'notes',
+      populate: { path: 'createdBy', select: 'id name email' }
+    })
     res.status(200).json({ ok: true, task: populated })
   } catch (error) {
     serverError(error, res)

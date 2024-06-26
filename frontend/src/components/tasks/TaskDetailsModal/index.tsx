@@ -13,6 +13,7 @@ import { formatDate } from '@/utils/index'
 import { statusTranslations } from '../TasksList'
 import { toast } from 'react-toastify'
 import type { TaskStatus } from '@/types/index'
+import { NotesPanel } from '@/components/notes/NotesPanel'
 
 export const TaskDetailsModal = () => {
   const navigate = useNavigate()
@@ -110,23 +111,27 @@ export const TaskDetailsModal = () => {
                       {data.description}
                     </p>
 
-                    <p className='text-2xl text-gray-500 mb-2'>
-                      Historial de cambios
-                    </p>
+                    {data.updatedBy.length > 0 && (
+                      <>
+                        <p className='font-bold text-2xl text-gray-600 my-5'>
+                          Historial de cambios
+                        </p>
 
-                    <ol className='list-decimal'>
-                      {data.updatedBy.map((activity) => (
-                        <li
-                          key={activity._id}
-                          className='my-2 ml-8'
-                        >
-                          <span className='font-bold text-gray-600'>
-                            {statusTranslations[activity.status]} por {''}
-                          </span>
-                          {activity.user.name}
-                        </li>
-                      ))}
-                    </ol>
+                        <ol className='list-decimal'>
+                          {data.updatedBy.map((activity) => (
+                            <li
+                              key={activity._id}
+                              className='my-2 ml-8'
+                            >
+                              <span className='font-bold text-gray-600'>
+                                {statusTranslations[activity.status]} por {''}
+                              </span>
+                              {activity.user.name}
+                            </li>
+                          ))}
+                        </ol>
+                      </>
+                    )}
 
                     <div className='my-5 space-y-3'>
                       <label
@@ -154,6 +159,8 @@ export const TaskDetailsModal = () => {
                         )}
                       </select>
                     </div>
+
+                    <NotesPanel notes={data.notes} />
                   </DialogPanel>
                 </TransitionChild>
               </div>
