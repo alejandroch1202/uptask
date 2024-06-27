@@ -70,4 +70,16 @@ const taskSchema = new Schema(
   }
 )
 
+taskSchema.pre(
+  'deleteOne',
+  {
+    document: true
+  },
+  async function (next) {
+    const taskId = this._id
+    await this.model('Notes').deleteMany({ task: taskId })
+    next()
+  }
+)
+
 export default model<ITask>('Tasks', taskSchema)

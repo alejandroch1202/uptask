@@ -3,7 +3,9 @@ import { api } from '@/config/axios'
 import {
   dashboardProjectSchema,
   type Project,
-  type DraftProject
+  type DraftProject,
+  editProjectSchema,
+  projectSchema
 } from '@/types/index'
 
 export const createProject = async (formData: DraftProject) => {
@@ -35,7 +37,24 @@ export const listProjects = async () => {
 export const findProject = async (id: Project['_id']) => {
   try {
     const { data } = await api.get(`/projects/${id}`)
-    return data.project
+    const response = editProjectSchema.safeParse(data.project)
+    if (response.success) {
+      return response.data
+    }
+  } catch (error) {
+    if (isAxiosError(error) && error.response !== undefined) {
+      throw new Error(error.response.data.message)
+    }
+  }
+}
+
+export const findFullProject = async (id: Project['_id']) => {
+  try {
+    const { data } = await api.get(`/projects/${id}`)
+    const response = projectSchema.safeParse(data.project)
+    if (response.success) {
+      return response.data
+    }
   } catch (error) {
     if (isAxiosError(error) && error.response !== undefined) {
       throw new Error(error.response.data.message)

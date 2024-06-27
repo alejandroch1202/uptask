@@ -1,6 +1,6 @@
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { findProject } from '@/services/project'
+import { findFullProject } from '@/services/project'
 import { CreateTaskModal } from '@/components/tasks/CreateTaskModal'
 import { TaskList } from '@/components/tasks/TasksList'
 import { EditTaskData } from '@/components/tasks/EditTaskData'
@@ -16,7 +16,7 @@ export const ProjectDetails = () => {
   const { projectId } = useParams()
   const { data, isLoading, isError } = useQuery({
     queryKey: ['project', projectId],
-    queryFn: async () => await findProject(projectId!),
+    queryFn: async () => await findFullProject(projectId!),
     retry: false
   })
 

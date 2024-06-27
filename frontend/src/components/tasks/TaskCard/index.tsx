@@ -7,19 +7,23 @@ import {
   Transition
 } from '@headlessui/react'
 import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
-import type { Task } from '@/types/index'
+import type { TaskProject } from '@/types/index'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { removeTask } from '@/services/tasks'
 import { toast } from 'react-toastify'
+import { useDraggable } from '@dnd-kit/core'
 
 export const TaskCard = ({
   task,
   isAdmin
 }: {
-  task: Task
+  task: TaskProject
   isAdmin: boolean
 }) => {
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: task._id
+  })
   const params = useParams()
   const navigate = useNavigate()
   const projectId = params.projectId!
@@ -38,18 +42,34 @@ export const TaskCard = ({
     }
   })
 
+  const style =
+    transform !== null
+      ? {
+          transform: `translate3D(${transform.x}px, ${transform.y}px, 0)`,
+          padding: '1.25rem',
+          borderColor: '#E5E7EB',
+          boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
+        }
+      : undefined
+
   return (
     <li className='p-5 bg-white border border-gray-300 flex justify-between gap-3'>
-      <div className='min-w-0 flex flex-col gap-y-4'>
-        <button
-          onClick={() => {
-            navigate(`?viewTask=${task._id}`)
-          }}
-          type='button'
+      <div
+        {...listeners}
+        {...attributes}
+        ref={setNodeRef}
+        style={style}
+        className='min-w-0 flex flex-col gap-y-4 bg-white'
+      >
+        <p
+          // onClick={() => {
+          //   navigate(`?viewTask=${task._id}`)
+          // }}
+          // type='button'
           className='text-xl font-bold test-gray-600 text-left'
         >
           {task.name}
-        </button>
+        </p>
 
         <p className='text-gray-500'>{task.description}</p>
       </div>

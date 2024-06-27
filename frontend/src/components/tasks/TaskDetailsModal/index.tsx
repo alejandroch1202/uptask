@@ -39,7 +39,6 @@ export const TaskDetailsModal = () => {
       queryClient.invalidateQueries({ queryKey: ['project', projectId] })
       queryClient.invalidateQueries({ queryKey: ['task', taskId] })
       toast.success(data.message)
-      navigate('', { replace: true })
     },
     onError: (error) => {
       toast.error(error.message)

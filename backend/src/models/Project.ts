@@ -55,4 +55,23 @@ const projectSchema = new Schema(
   }
 )
 
+projectSchema.pre(
+  'deleteOne',
+  {
+    document: true
+  },
+  async function (next) {
+    const projectId = this._id
+
+    const tasks = await this.model('Tasks').find({ project: projectId })
+
+    tasks.forEach(async (task) => {
+      await this.model('Notes').deleteMany({ task: task.id })
+    })
+
+    await this.model('Tasks').deleteMany({ project: projectId })
+    next()
+  }
+)
+
 export default model<IProject>('Projects', projectSchema)

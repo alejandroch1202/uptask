@@ -1,6 +1,5 @@
 import type { Request, Response } from 'express'
 import Project from '../models/Project'
-import Task from '../models/Task'
 import { serverError } from '../middlewares/validation'
 
 export const create = async (req: Request, res: Response) => {
@@ -46,13 +45,6 @@ export const find = async (req: Request, res: Response) => {
 
 export const update = async (req: Request, res: Response) => {
   try {
-    const { id } = req.user
-    const { manager } = req.project
-
-    if (manager === undefined || manager.toString() !== id.toString()) {
-      return res.status(403).json({ ok: false, message: 'Acción no válida' })
-    }
-
     const changes = req.body
     req.project.name = changes.name
     req.project.client = changes.client
@@ -69,18 +61,7 @@ export const update = async (req: Request, res: Response) => {
 
 export const remove = async (req: Request, res: Response) => {
   try {
-    const { id } = req.user
-    const { manager } = req.project
-
-    if (manager === undefined || manager.toString() !== id.toString()) {
-      return res.status(403).json({ ok: false, message: 'Acción no válida' })
-    }
-
-    await Promise.allSettled([
-      Task.deleteMany({ project: req.project.id }),
-      req.project.deleteOne()
-    ])
-
+    await req.project.deleteOne()
     res
       .status(200)
       .json({ ok: true, message: 'Proyecto eliminado correctamente' })
